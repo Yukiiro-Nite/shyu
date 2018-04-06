@@ -6,7 +6,7 @@ module.exports = (packageName) => new Promise((resolve, reject) => {
       reject('Problem running exec: ', error);
       return;
     }
-    resolve(stdout);
+    resolve(JSON.parse(stdout));
   });
 }).catch((error) => {
   console.log(`Problem getting published versions: `, error);

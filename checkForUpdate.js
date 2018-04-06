@@ -1,8 +1,10 @@
 const semver = require('semver');
 const publishedVersions = require('./publishedVersions');
+const path = require('path');
 
 module.exports = function checkForUpdate() {
-  let parentPackage = tryquire('../package.json', undefined); // work on pathing, this isn't quite right.
+  const parentPackagePath = path.resolve(__dirname, '../../package.json');
+  let parentPackage = tryquire(parentPackagePath, undefined);
 
   return new Promise((resolve, reject) => {
     let needsUpdate;
@@ -10,8 +12,8 @@ module.exports = function checkForUpdate() {
 
     if(parentPackage && parentPackage.name && parentPackage.version) {
       publishedVersions(parentPackage.name).then(versions => {
-        latestVersion = versions[versions.length];
-        needsUpdate = semver(latestVersion).gt(parentPackage.version);
+        latestVersion = versions[versions.length - 1];
+        needsUpdate = semver.gt(latestVersion, parentPackage.version);
 
         resolve({
           parentPackage,
@@ -23,7 +25,7 @@ module.exports = function checkForUpdate() {
       reject('Invalid parent package');
     }
   }).catch((error) => {
-    console.log('problem checking for update: ', error);
+    console.log('Problem checking for update: ', error);
     return {
       parentPackage
     }
