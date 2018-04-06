@@ -1,0 +1,15 @@
+{
+  "name": "shyu",
+  "version": "1.0.0",
+  "description": "Adding this as a dependency will tell users of your package if they should update",
+  "main": "src/index.js",
+  "scripts": {
+    "postinstall": "node runCheckForUpdate.js",
+    "test": "test.js"
+  },
+  "author": "Michael Bryant",
+  "license": "ISC",
+  "dependencies": {
+    "semver": "^5.5.0"
+  }
+}
